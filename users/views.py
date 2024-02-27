@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.views.decorators.csrf import csrf_exempt
 
 
-
+@csrf_exempt
 def index(request):
     user_list = User.objects.all().order_by('-id')
     paginator = Paginator(user_list, 5)
@@ -20,7 +20,7 @@ def index(request):
 
     return render(request, 'users/index.html', {'page_obj': user_list})
 
-
+@csrf_exempt
 def search(request):
     term = request.GET.get('search', '')
     user_list = User.objects.filter(Q(user_fname__icontains=term) | Q(user_lname__icontains=term)).order_by('-id')
@@ -31,10 +31,11 @@ def search(request):
 
     return render(request, 'users/index.html', {'page_obj': user_list})
 
-
+@csrf_exempt
 def add(request):
     return render(request, 'users/add.html')
 
+@csrf_exempt
 def processadd(request):
     fname = request.POST.get('fname')
     lname = request.POST.get('lname')
@@ -55,7 +56,8 @@ def processadd(request):
         user = User.objects.create(user_email=email, user_fname=fname, user_lname=lname, user_position=position, user_image=user_pic)
         user.save()
         return HttpResponseRedirect('/users')
-
+    
+@csrf_exempt
 @login_required(login_url='/users/login')
 def detail(request, profile_id):
     try:
@@ -66,10 +68,12 @@ def detail(request, profile_id):
         raise Http404("Profile does not exist")
     return render(request, 'users/detail.html', {'users': user, 'comments': comments, 'comments_count' : comments_count })
 
+@csrf_exempt
 def delete(request, profile_id):
     User.objects.filter(id=profile_id).delete()
     return HttpResponseRedirect('/users')
 
+@csrf_exempt
 def addcomment(request):
     comment_text = request.POST.get('comment')
     user_id = request.POST.get('user_id')  
@@ -87,7 +91,7 @@ def edit (request, profile_id):
     except User.DoesNotExist:
         raise Http404("Profile does not exist")
     return render(request, 'users/edit.html', {'users': user})
-
+@csrf_exempt
 def processedit(request, profile_id):
     user = get_object_or_404(User, pk=profile_id)
     profile_pic = request.FILES.get('image')
@@ -112,6 +116,7 @@ def processedit(request, profile_id):
         user_profile.save()
         return HttpResponseRedirect(reverse('users:detail', args=(profile_id,)))
  
+@csrf_exempt
 def loginview(request):
     return render(request, 'users/login.html')
 
