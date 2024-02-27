@@ -1,1 +1,1 @@
-web: gunicorn 'railway_django'
+web: gunicorn railway_django.wsgi
