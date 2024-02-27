@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row mt-5">
+
+        <div class="col-md-6 m-auto">
+
+            {% if error_message %}
+                <p class="alert alert-danger">
+                    <strong>{{ error_message }}</strong>
+                </p>
+            {% endif %}
+
+            <div class="text-center">
+                <h2>Log in Form</h2>
+            </div>
+
+            <form action="{% url 'users:process' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" name="username" id="username" class="form-control" placeholder="Enter username" autocomplete="off">
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Enter password">
+                </div>
+
+                <button type="submit" class="btn btn-success" style="margin-top: 10px;">Login</button>
+            </form>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

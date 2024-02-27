@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ user.user_fname }} {{ user.user_lname }}
+{% endblock %}
+
+{% block content %}
+
+{% if error_message %}
+    <p class="alert alert-danger">
+        <strong>{{ error_message }}</strong>
+    </p>
+{% endif %}
+
+<div class="row">
+    
+    <div class="col-lg-6">
+
+        <div class=" mb-5">
+            <h1> {{ user.user_fname }} {{ users.user_lname }} </h1>
+            <p class = "text-muted">{{ users.user_email }}</p>
+            <p>Position : {{ users.user_position }}</p>
+        </div>
+        
+        <div class="img-responsive">
+            <img src="/users/media/{{ users.user_image }}" alt="profile_user" width="300" class="img-rounded">
+        </div>
+        
+        <div class="btn-group mt-5">
+            {% if user.is_staff %}
+            <a href="{% url 'users:delete' user.id %}" class="btn btn-sm btn-danger">Delete</a>
+            <a href="{% url 'users:edit' user.id %}" class="btn btn-sm btn-info">Edit</a>
+            {% endif %}
+            <a href="{% url 'users:index' %}" class="btn btn-sm btn-success">Return</a>
+        </div>
+
+    </div>
+
+    <div class="col-lg-6">
+        <h2>Comments</h2>
+        <p class="text-muted"> total of {{ comments_count }}</p>
+        {% if comments_count > 0 %}
+            {% for comment in comments %}
+                <p><strong>{{ comment.name }}</strong> : {{ comment.body }}</p>
+            {% endfor %}
+        {% endif %}
+        
+        <hr>
+        <br>
+
+        <form action="{% url 'users:addcomment' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label><strong>Write a comment:</strong></label>
+                <textarea name="comment" id="comment" cols="50" rows="10" class="form-control" required></textarea>
+            </div>
+
+            <input type="hidden" name="user_id" id="user_id" value="{{ users.id }}">
+            <input type="hidden" name="name" id="name" value="{{ user.username }}">
+            <input type="hidden" name="email" id="user_email" value="{{ user.email }}">
+
+            <button type="submit" class="btn mt-2 btn-sm btn-primary"> Add Comment </button>
+
+        </form>     
+
+    </div>
+
+
+</div>
+
+
+
+{% endblock %}
+
+
+
