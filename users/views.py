@@ -8,6 +8,8 @@ from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required, permission_required
+from django.views.decorators.csrf import csrf_exempt
+
 
 
 def index(request):
@@ -113,6 +115,7 @@ def processedit(request, profile_id):
 def loginview(request):
     return render(request, 'users/login.html')
 
+@csrf_exempt
 def process(request):
     username = request.POST.get('username')
     password = request.POST.get('password')
@@ -131,4 +134,5 @@ def process(request):
 def processlogout(request):
     logout(request)
     return HttpResponseRedirect('/users/login')
+
 
