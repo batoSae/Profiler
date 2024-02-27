@@ -49,7 +49,6 @@
         <br>
 
         <form action="{% url 'users:addcomment' %}" method="post">
-            {% csrf_token %}
             <div class="form-group">
                 <label><strong>Write a comment:</strong></label>
                 <textarea name="comment" id="comment" cols="50" rows="10" class="form-control" required></textarea>

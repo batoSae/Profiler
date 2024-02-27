@@ -22,7 +22,6 @@ Login
             </div>
 
             <form action="{% url 'users:process' %}" method="post">
-                {% csrf_token %}
                 <div class="form-group">
                     <label>Username</label>
                     <input type="text" name="username" id="username" class="form-control" placeholder="Enter username" autocomplete="off">

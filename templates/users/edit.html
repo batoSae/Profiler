@@ -15,7 +15,7 @@
 {% endif %}
 
     <form action="{% url 'users:processedit' user.id %}" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+
 
         <div class="form-group">
             <label>First Name</label>
